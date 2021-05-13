@@ -15,8 +15,8 @@ int main() {
 	//Na.M_IdentifyDecays();
 
 	ActiveMedium Yb(1, 2);
-	//IdentifyBestDecay(700);
-	IdentifyBestDecayInAtom(1030, 70);
+	//std::cout << 70_Z << std::endl;
+	std::cout << 1030_nm << std::endl;
 
 	return EXIT_SUCCESS;
 }

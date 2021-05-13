@@ -12,6 +12,10 @@ ExternalSource::ExternalSource(std::pair<float, float> lambda_prob) {
 	std::cout << "DON'T FORGET TO ALSO SET THE OUTPUT POWER OF THE SOURCE" << std::endl;
 }
 
+//ExternalSource::ExternalSource(unsigned int Z) {
+
+//}
+
 void ExternalSource::M_AddDecay(std::pair<float, float> lambda_prob) {
 	this->m_OutputDecays[lambda_prob.first] = lambda_prob.second;
 

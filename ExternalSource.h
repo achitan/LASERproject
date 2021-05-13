@@ -17,6 +17,7 @@ private:
 
 public:
 	ExternalSource(float lambda);//monochromatic source
+	//ExternalSource(unsigned int Z);
 	ExternalSource(std::pair<float,float> lambda_prob);//polychromatic source w/ favourable color
 	void M_IdentifyDecays();
 	
