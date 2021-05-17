@@ -8,7 +8,7 @@
 #include "ActiveMedium.h"
 
 int main() {
-	ExternalSource source(70);
+	ExternalSource source(980);
 	source.M_SetPower(1000);
 	source.M_RunFor(10);
 	

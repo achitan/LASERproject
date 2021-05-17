@@ -17,6 +17,7 @@ private:
 	float pi = 3.1415926535;
 	float m_OutputPower;//W
 	unsigned int m_Z;//atomic number
+	std::string m_Symbol;
 
 public:
 	ExternalSource(unsigned int lambda);
