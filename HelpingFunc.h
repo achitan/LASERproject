@@ -41,3 +41,22 @@ std::string operator"" _nm(unsigned long long wl) {
 	in.close();
 	return element;
 }
+
+std::string getElementByZ(unsigned int z) {
+	std::ifstream in("periodic_table.txt", std::ios::in);
+	std::string line;
+	unsigned int Z;
+	std::string Element;
+	std::string Symbol;
+	while (!in.eof()) {
+		std::getline(in, line);
+		Z = atoi(line.substr(0, line.find(",")).c_str());
+		Element = line.substr(line.find(",") + 1, line.find(",", line.find(",") + 1) - line.find(",") - 1);
+		Symbol = line.substr(line.find(",", line.find(",") + 1) + 1, line.find(",", line.find(",", line.find(",") + 1) + 1) - line.find(",", line.find(",") + 1) - 1);
+		if (z == Z)
+			break;
+	}
+
+	in.close();
+	return Symbol;
+}

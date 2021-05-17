@@ -8,15 +8,12 @@
 #include "ActiveMedium.h"
 
 int main() {
-	ExternalSource Na(980);
-	//Na.M_AddDecay(std::make_pair(980, 0.4));
-	Na.M_SetPower(1000);
-	Na.M_RunFor(10);
-	//Na.M_IdentifyDecays();
-
-	ActiveMedium Yb(1, 2);
+	ExternalSource source(70);
+	source.M_SetPower(1000);
+	source.M_RunFor(10);
+	
 	//std::cout << 70_Z << std::endl;
-	std::cout << 1030_nm << std::endl;
+	//std::cout << 1030_nm << std::endl;
 
 	return EXIT_SUCCESS;
 }

@@ -1,40 +1,22 @@
 #include "ExternalSource.h"
 
-ExternalSource::ExternalSource(float lambda) {
-	this->m_OutputDecays[lambda] = 1;
+ExternalSource::ExternalSource(unsigned int lambda) {
+	if (lambda > 118) {
+		this->m_Wavelengths.push_back(lambda);
+		this->M_IdentifyElement();
+	}
+	else {
+		this->m_Z = lambda;
+		this->M_IdentifyEmissions();
+	}
 
 	std::cout << "DON'T FORGET TO ALSO SET THE OUTPUT POWER OF THE SOURCE" << std::endl;
-}
-
-ExternalSource::ExternalSource(std::pair<float, float> lambda_prob) {
-	this->m_OutputDecays[lambda_prob.first] = lambda_prob.second;
-
-	std::cout << "DON'T FORGET TO ALSO SET THE OUTPUT POWER OF THE SOURCE" << std::endl;
-}
-
-//ExternalSource::ExternalSource(unsigned int Z) {
-
-//}
-
-void ExternalSource::M_AddDecay(std::pair<float, float> lambda_prob) {
-	this->m_OutputDecays[lambda_prob.first] = lambda_prob.second;
-
-	auto iterTranzitions = this->m_OutputDecays.begin();
-	float sumProb = 0;
-	while (iterTranzitions != this->m_OutputDecays.end()) {
-		sumProb += iterTranzitions->second;
-		++iterTranzitions;
-	}
-	if (sumProb > 1) {
-		std::cout << "Probability sum cannot go ever 100%. Revize decays!" << std::endl;
-		std::exit(1);
-	}
 }
 
 void ExternalSource::M_SetPower(float power) {
 	this->m_OutputPower = power;
 	//std::cout << "POWER SET" << std::endl;
-	auto iterDecays = this->m_OutputDecays.begin();
+	/*auto iterDecays = this->m_OutputDecays.begin();
 
 	std::cout << "===================PUMP ESTABLISHED====================" << std::endl;
 	std::cout << "THIS PUMP EMITS IN: " << iterDecays->first << " nm (" << c / iterDecays->first / 1E-9 << " Hz)";
@@ -45,12 +27,12 @@ void ExternalSource::M_SetPower(float power) {
 	}
 	std::cout << "." << std::endl;
 	std::cout << "POWER OUTPUT: " << power << " W" << std::endl;
-	std::cout << "=======================================================" << std::endl;
+	std::cout << "=======================================================" << std::endl;*/
 }
 
 void ExternalSource::M_RunFor(unsigned long time) {//time in nanoseconds
 	//std::srand(std::time(NULL));
-	auto iterDecays = this->m_OutputDecays.begin();
+	/*auto iterDecays = this->m_OutputDecays.begin();
 	float totalEnergy = this->m_OutputPower * time * 1E-9;
 	float sumEnergy = 0;
 	while (iterDecays != this->m_OutputDecays.end()) {
@@ -61,37 +43,57 @@ void ExternalSource::M_RunFor(unsigned long time) {//time in nanoseconds
 	std::cout << "AFTER RUNNING FOR " << time << " ns," << std::endl;
 	std::cout << "IT GENERATED " << totalEnergy / sumEnergy << " photons." << std::endl;
 	std::cout << "FLUX [photons/sr]: " << totalEnergy / sumEnergy / 4 / pi << std::endl;
-	std::cout << "=======================================================" << std::endl;
+	std::cout << "=======================================================" << std::endl;*/
 }
 
-void ExternalSource::M_IdentifyDecays() {
-	auto iterDecays = this->m_OutputDecays.begin();
-	float energ = 0;
-	float diff = 1000;
-	unsigned int n_f = 0;
-	unsigned int n_i = 0;
-	unsigned int Z_atom = 0;
-	float energQuanta = 0;
-	while (iterDecays != this->m_OutputDecays.end()) {
-		energ = h * c / (iterDecays->first * 1E-9);
-		for (unsigned int Z = 1; Z <= 118; Z++) {
-			for (unsigned int n_initial = 1; n_initial < 7; n_initial++) {
-				//for (unsigned int n_final = n_initial+1; n_final < 8; n_final++) {
-				unsigned int n_final = n_initial + 1;
-				energQuanta = -13.6 * pow(Z, 2) * 1.60218E-19;
-				energQuanta *= (1 / pow(n_final, 2) - 1 / pow(n_initial, 2));
-				if (diff > abs(energ - energQuanta)) {
-					diff = abs(energ - energQuanta);
-					Z_atom = Z;
-					n_i = n_initial;
-					n_f = n_final;
-				}
-				//}
-			}
-		}
-		++iterDecays;
+void ExternalSource::M_IdentifyEmissions() {
+	std::ifstream in("periodic_table.txt", std::ios::in);
+	std::string line;
+	unsigned int Z;
+	std::string Element;
+	std::string Symbol;
+	while (!in.eof()) {
+		std::getline(in, line);
+		Z = atoi(line.substr(0, line.find(",")).c_str());
+		Element = line.substr(line.find(",") + 1, line.find(",", line.find(",") + 1) - line.find(",") - 1);
+		Symbol = line.substr(line.find(",", line.find(",") + 1) + 1, line.find(",", line.find(",", line.find(",") + 1) + 1) - line.find(",", line.find(",") + 1) - 1);
+		if (this->m_Z == Z)
+			break;
 	}
-	std::cout << "ATOMIC PROPERTIES: " << std::endl;
-	std::cout << "Z: " << Z_atom << std::endl;
-	std::cout << "TRANZITION FROM " << n_i << " TO " << n_f << std::endl;
+	in.close();
+
+	std::string element = Symbol;
+	in = std::ifstream("spectraVisibleEmissions.txt", std::ios::in);
+	//std::string line;
+	float wavelength = 0;
+	while (!in.eof()) {
+		std::getline(in, line);
+		if (element.compare(line.substr(0, line.find("\t"))) == 0) {
+			wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
+			this->m_Wavelengths.push_back(wavelength);
+		}
+	}
+	std::cout << "========================SOURCE=======================" << std::endl;
+	std::cout << "YOU HAVE SET A SOURCE OF " << this->m_Z << std::endl;
+	std::cout << "=====================================================" << std::endl;
+}
+
+void ExternalSource::M_IdentifyElement() {
+	std::ifstream in("spectraVisibleEmissions.txt", std::ios::in);
+	std::string line;
+	float diff = 1000;
+	float wavelength = 0;
+	std::string element;
+	while (!in.eof()) {
+		std::getline(in, line);
+		wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
+		if (fabs(wavelength - this->m_Wavelengths.at(0)) < diff) {
+			diff = fabs(wavelength - this->m_Wavelengths.at(0));
+			element = line.substr(0, line.find("\t"));
+		}
+	}
+	std::cout << "========================SOURCE=======================" << std::endl;
+	std::cout << "YOU HAVE SET A SOURCE EMITTING AT: " << this->m_Wavelengths.at(0) << " nm" << std::endl;
+	std::cout << "CLOSEST ELEMENT EMITTING THIS WAVE IS: " << element << std::endl;
+	std::cout << "=====================================================" << std::endl;
 }
