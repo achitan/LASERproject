@@ -84,12 +84,14 @@ void ExternalSource::M_IdentifyElement() {
 	float diff = 1000;
 	float wavelength = 0;
 	std::string element;
+	int ion;
 	while (!in.eof()) {
 		std::getline(in, line);
 		wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
 		if (fabs(wavelength - this->m_Wavelengths.at(0)) < diff) {
 			diff = fabs(wavelength - this->m_Wavelengths.at(0));
 			element = line.substr(0, line.find("\t"));
+			ion = atoi(line.substr(line.find("\t") + 1, line.find("\"") - line.find("\t") - 1).c_str());
 		}
 	}
 	this->m_Symbol = element;
@@ -109,6 +111,6 @@ void ExternalSource::M_IdentifyElement() {
 	this->m_Z = Z;
 	std::cout << "========================SOURCE=======================" << std::endl;
 	std::cout << "YOU HAVE SET A SOURCE EMITTING AT: " << this->m_Wavelengths.at(0) << " nm" << std::endl;
-	std::cout << "CLOSEST ELEMENT EMITTING THIS WAVE IS: " << element << std::endl;
+	std::cout << "CLOSEST ION EMITTING THIS WAVE IS: " << element << ion << std::endl;
 	std::cout << "=====================================================" << std::endl;
 }
