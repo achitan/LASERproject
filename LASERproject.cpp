@@ -8,9 +8,13 @@
 #include "ActiveMedium.h"
 
 int main() {
-	ExternalSource source(980);
-	source.M_SetPower(1000);
-	source.M_RunFor(10);
+	//ExternalSource source(980);
+	//source.M_SetPower(1000);
+	//source.M_RunFor(10);
+
+	ActiveMedium am(70, 33);
+	am.M_SetIncomingRadiation(980);
+	am.M_IdentifyMostProbableEmission();
 	
 	//std::cout << 70_Z << std::endl;
 	//std::cout << 1030_nm << std::endl;

@@ -68,7 +68,7 @@ void ExternalSource::M_IdentifyEmissions() {
 		std::getline(in, line);
 		if (element.compare(line.substr(0, line.find("\t"))) == 0) {
 			wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
-			if (wavelength)
+			if (wavelength > 200)
 				this->m_Wavelengths.push_back(wavelength);
 		}
 	}
@@ -84,7 +84,7 @@ void ExternalSource::M_IdentifyElement() {
 	float diff = 1000;
 	float wavelength = 0;
 	std::string element;
-	int ion;
+	int ion = 0;
 	while (!in.eof()) {
 		std::getline(in, line);
 		wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
