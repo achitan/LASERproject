@@ -13,13 +13,15 @@ private:
 	unsigned int m_Ztransparence;
 	float m_Emission;
 	float m_Length;
-	float m_Reflection;//the semi-reflexive mirror (~1%)
+	float m_Reflection;//the semi-reflexive mirror (~99%)
 	float m_PrimaryPopInversionRadiation;
+	float m_MeanFreePath;
 
 public:
 	ActiveMedium(unsigned int Z1, unsigned int Z2);
 	//virtual ~ActiveMedium();
 	void M_SetIncomingRadiation(float wavelength);
 	void M_IdentifyNearestEmission();//most probable after the pop inversion from Z1
+	void M_GetMeanFreePath(float density);
 };
 

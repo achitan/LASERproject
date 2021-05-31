@@ -4,7 +4,7 @@ ActiveMedium::ActiveMedium(unsigned int Z1, unsigned int Z2) {
 	this->m_Reflection = 0.99;
 	this->m_Zemission = Z1;
 	this->m_Ztransparence = Z2;
-	this->m_Reflection = 0.99;
+	
 }
 
 void ActiveMedium::M_IdentifyNearestEmission() {
@@ -51,4 +51,8 @@ void ActiveMedium::M_IdentifyNearestEmission() {
 
 void ActiveMedium::M_SetIncomingRadiation(float wavelength) {
 	this->m_PrimaryPopInversionRadiation = wavelength;
+}
+
+void ActiveMedium::M_GetMeanFreePath(float density) {
+
 }
