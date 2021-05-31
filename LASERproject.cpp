@@ -14,7 +14,7 @@ int main() {
 
 	ActiveMedium am(70, 33);
 	am.M_SetIncomingRadiation(980);
-	am.M_IdentifyMostProbableEmission();
+	am.M_IdentifyNearestEmission();
 	
 	//std::cout << 70_Z << std::endl;
 	//std::cout << 1030_nm << std::endl;

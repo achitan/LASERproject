@@ -7,8 +7,8 @@ ActiveMedium::ActiveMedium(unsigned int Z1, unsigned int Z2) {
 	this->m_Reflection = 0.99;
 }
 
-void ActiveMedium::M_IdentifyMostProbableEmission() {
-	//get all emissions from Z1
+void ActiveMedium::M_IdentifyNearestEmission() {
+	//get all emissions of Z1
 	std::vector<float> emissionsOfZ;
 	std::ifstream in("periodic_table.txt", std::ios::in);
 	unsigned int Z;
@@ -31,7 +31,7 @@ void ActiveMedium::M_IdentifyMostProbableEmission() {
 		std::getline(in, line);
 		if (Symbol.compare(line.substr(0, line.find("\t"))) == 0) {
 			wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
-			if (wavelength > 200)
+			if (wavelength > 199)
 				emissionsOfZ.push_back(wavelength);
 		}
 	}

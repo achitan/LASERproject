@@ -68,7 +68,7 @@ void ExternalSource::M_IdentifyEmissions() {
 		std::getline(in, line);
 		if (element.compare(line.substr(0, line.find("\t"))) == 0) {
 			wavelength = atof(line.substr(line.find("\"") + 1, line.find("\"", line.find("\"") + 1) - line.find("\"")).c_str());
-			if (wavelength > 200)
+			if (wavelength > 199)
 				this->m_Wavelengths.push_back(wavelength);
 		}
 	}

@@ -21,6 +21,7 @@ private:
 
 public:
 	ExternalSource(unsigned int lambda);
+	//virtual ~ExternalSource();
 	void M_IdentifyEmissions();
 	void M_IdentifyElement();
 	void M_SetPower(float power);
