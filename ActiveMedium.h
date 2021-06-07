@@ -16,12 +16,13 @@ private:
 	float m_Reflection;//the semi-reflexive mirror (~99%)
 	float m_PrimaryPopInversionRadiation;
 	float m_MeanFreePath;
+	float m_MeanFreeTime;
 
 public:
 	ActiveMedium(unsigned int Z1, unsigned int Z2);
 	//virtual ~ActiveMedium();
 	void M_SetIncomingRadiation(float wavelength);
-	void M_IdentifyNearestEmission();//most probable after the pop inversion from Z1
-	void M_GetMeanFreePath(float density);
+	void M_IdentifyNearestEmission();//closest after the pop. inversion from Z1
+	void M_GetMeanFreePath(float density);//this sets the mean free path and time of the photons in the active medium
 };
 

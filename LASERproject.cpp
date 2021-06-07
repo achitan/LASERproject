@@ -12,13 +12,15 @@ int main() {
 	//source.M_SetPower(1000);
 	//source.M_RunFor(10);
 
-	//ActiveMedium am(70, 33);
-	//am.M_SetIncomingRadiation(980);
+	ActiveMedium am(70, 33);
+	am.M_SetIncomingRadiation(980);
 	//am.M_IdentifyNearestEmission();
+	am.M_GetMeanFreePath(0.1);
 	
+	//HELPING FUNCTIONS TEST
 	//std::cout << 70_Z << std::endl;
 	//std::cout << 1030_nm << std::endl;
-	std::cout << 98_Zr << std::endl;
+	//std::cout << 70_Zr << std::endl;
 
 	return EXIT_SUCCESS;
 }

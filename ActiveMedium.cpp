@@ -54,5 +54,42 @@ void ActiveMedium::M_SetIncomingRadiation(float wavelength) {
 }
 
 void ActiveMedium::M_GetMeanFreePath(float density) {
+	std::ifstream in("periodic_table.txt", std::ios::in);
+	std::vector<std::string> types = { "Gas","Metal","metal","Lanthanide","Actinide","Halogen" };
+	std::string lineEmission;
+	std::string lineTransparence;
+	std::string line;
+	unsigned int Z;
+	float radiusEmission = 0;//the radius of the emitting atom
+	float radiusTransparence = 0;//the radius of the refractive medium
+	while (!in.eof()) {
+		std::getline(in, line);
+		Z = atoi(line.substr(0, line.find(",")).c_str());
+		if (this->m_Zemission == Z)
+			lineEmission = line;
+		else if (this->m_Ztransparence == Z)
+			lineTransparence = line;
+		else if (lineTransparence.size() && lineEmission.size())
+			break;
+	}
+	in.close();
+	auto iterTypes = types.begin();
+	while (iterTypes != types.end()) {
+		size_t commaEmission = lineEmission.find(",", lineEmission.find(*iterTypes)) != std::string::npos ? lineEmission.find(",", lineEmission.find(*iterTypes)) + 1 : std::string::npos;
+		size_t commaTransparence = lineTransparence.find(",", lineTransparence.find(*iterTypes)) != std::string::npos ? lineTransparence.find(",", lineTransparence.find(*iterTypes)) + 1 : std::string::npos;
+		if (commaEmission != std::string::npos)
+			radiusEmission = atof(lineEmission.substr(commaEmission, lineEmission.find(",", commaEmission) - commaEmission).c_str());
+		if (commaTransparence != std::string::npos)
+			radiusTransparence = atof(lineTransparence.substr(commaTransparence, lineTransparence.find(",", commaTransparence) - commaTransparence).c_str());
+		if (radiusEmission && radiusTransparence)
+			break;
+		iterTypes++;
+	}
 
+	//TOTAL DISTANCE OF A STRING OF ATOMS IN THE ACTIVE MEDIUM
+	float transparenceAtomNo = 100 - density;
+	float emissionAtomNo = density;
+	float path = transparenceAtomNo * radiusTransparence + emissionAtomNo * radiusEmission;
+	this->m_MeanFreePath = path / density * 1E-12;
+	this->m_MeanFreeTime = path / 299792458. * 1E-12;
 }
