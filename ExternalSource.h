@@ -27,5 +27,6 @@ public:
 	void M_SetPower(float power);
 
 	void M_RunFor(unsigned long time);//time in seconds to run the light
+
 };
 

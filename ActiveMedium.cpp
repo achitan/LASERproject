@@ -1,10 +1,10 @@
 #include "ActiveMedium.h"
 
-ActiveMedium::ActiveMedium(unsigned int Z1, unsigned int Z2) {
+ActiveMedium::ActiveMedium(unsigned int Z1, unsigned int Z2, float n) {
 	this->m_Reflection = 0.99;
 	this->m_Zemission = Z1;
 	this->m_Ztransparence = Z2;
-	
+	this->m_OpticalDensity = n;
 }
 
 void ActiveMedium::M_IdentifyNearestEmission() {
@@ -53,7 +53,7 @@ void ActiveMedium::M_SetIncomingRadiation(float wavelength) {
 	this->m_PrimaryPopInversionRadiation = wavelength;
 }
 
-void ActiveMedium::M_GetMeanFreePath(float density) {
+void ActiveMedium::M_SetMeanFreePath(float density) {
 	std::ifstream in("periodic_table.txt", std::ios::in);
 	std::vector<std::string> types = { "Gas","Metal","metal","Lanthanide","Actinide","Halogen" };
 	std::string lineEmission;
@@ -87,9 +87,22 @@ void ActiveMedium::M_GetMeanFreePath(float density) {
 	}
 
 	//TOTAL DISTANCE OF A STRING OF ATOMS IN THE ACTIVE MEDIUM
-	float transparenceAtomNo = 100 - density;
+	float transparenceAtomNo = 100. - density;
 	float emissionAtomNo = density;
-	float path = transparenceAtomNo * radiusTransparence + emissionAtomNo * radiusEmission;
-	this->m_MeanFreePath = path / density * 1E-12;
-	this->m_MeanFreeTime = path / 299792458. * 1E-12;
+	float path = (transparenceAtomNo * radiusTransparence + emissionAtomNo * radiusEmission) * 1E-12;
+	this->m_MeanFreePath = path / density;
+	this->m_MeanFreeTime = path / 299792458. / this->m_OpticalDensity;
+}
+
+void ActiveMedium::M_SetNoEmissionsPerLength(float photonsFromSource) {
+	this->m_EmissionsPerTravel = this->m_Length / this->m_MeanFreePath;
+}
+
+void ActiveMedium::M_SetNoEmissionsPerTime() {
+	this->m_EmissionsPerSecond = 1 / (this->m_MeanFreePath / 299792458. / this->m_OpticalDensity);
+	std::cout << this->m_EmissionsPerSecond << std::endl;
+}
+
+void ActiveMedium::M_setLength(float l) {
+	this->m_Length = l;
 }
