@@ -23,12 +23,12 @@ private:
 
 public:
 	ActiveMedium(unsigned int Z1, unsigned int Z2, float n = 1);
-	//virtual ~ActiveMedium();
+	virtual ~ActiveMedium() {};
 	void M_SetIncomingRadiation(float wavelength);
-	void M_IdentifyNearestEmission();//closest after the pop. inversion from Z1
-	void M_SetMeanFreePath(float density);//this sets the mean free path and time of the photons in the active medium
+	void M_IdentifyNearestEmission();//closest after the pop. inversion of Z1
+	void M_SetMeanFreePath(float density, float molecularDistance = 0);//this sets the mean free path and free time of the photons in the active medium; the molecular distance parameter adds the crystaline netword constant - in pm
 	void M_SetNoEmissionsPerLength(float photonsFromSource);
 	void M_SetNoEmissionsPerTime();
-	void M_setLength(float l);
+	void M_SetLength(float l);
 };
 

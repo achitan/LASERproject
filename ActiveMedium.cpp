@@ -53,7 +53,7 @@ void ActiveMedium::M_SetIncomingRadiation(float wavelength) {
 	this->m_PrimaryPopInversionRadiation = wavelength;
 }
 
-void ActiveMedium::M_SetMeanFreePath(float density) {
+void ActiveMedium::M_SetMeanFreePath(float density, float molecularDistance) {
 	std::ifstream in("periodic_table.txt", std::ios::in);
 	std::vector<std::string> types = { "Gas","Metal","metal","Lanthanide","Actinide","Halogen" };
 	std::string lineEmission;
@@ -80,7 +80,7 @@ void ActiveMedium::M_SetMeanFreePath(float density) {
 		if (commaEmission != std::string::npos)
 			radiusEmission = atof(lineEmission.substr(commaEmission, lineEmission.find(",", commaEmission) - commaEmission).c_str());
 		if (commaTransparence != std::string::npos)
-			radiusTransparence = atof(lineTransparence.substr(commaTransparence, lineTransparence.find(",", commaTransparence) - commaTransparence).c_str());
+			radiusTransparence = atof(lineTransparence.substr(commaTransparence, lineTransparence.find(",", commaTransparence) - commaTransparence).c_str()) + molecularDistance;
 		if (radiusEmission && radiusTransparence)
 			break;
 		iterTypes++;
@@ -103,6 +103,6 @@ void ActiveMedium::M_SetNoEmissionsPerTime() {
 	std::cout << this->m_EmissionsPerSecond << std::endl;
 }
 
-void ActiveMedium::M_setLength(float l) {
+void ActiveMedium::M_SetLength(float l) {
 	this->m_Length = l;
 }
