@@ -15,8 +15,9 @@ int main() {
 	ActiveMedium am(70, 33, 1.5);
 	am.M_SetIncomingRadiation(980);
 	//am.M_IdentifyNearestEmission();
-	am.M_SetMeanFreePath(0.1,1000);
+	am.M_SetMeanFreePath(1,1000);
 	am.M_SetLength(1);
+	am.M_SetNoEmissionsPerLength();
 	am.M_SetNoEmissionsPerTime();
 	
 	//HELPING FUNCTIONS TEST

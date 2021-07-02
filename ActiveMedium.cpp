@@ -87,20 +87,21 @@ void ActiveMedium::M_SetMeanFreePath(float density, float molecularDistance) {
 	}
 
 	//TOTAL DISTANCE OF A STRING OF ATOMS IN THE ACTIVE MEDIUM
-	float transparenceAtomNo = 100. - density;
-	float emissionAtomNo = density;
-	float path = (transparenceAtomNo * radiusTransparence + emissionAtomNo * radiusEmission) * 1E-12;
-	this->m_MeanFreePath = path / density;
+	float transparenceAtomNo = 1000. / density - 1;
+	//float emissionAtomNo = density;
+	float path = transparenceAtomNo * (radiusTransparence + molecularDistance) * 1E-12;//a photon travels freely through the transparent medium atoms and the space between the nodes of the crystaline net.
+	this->m_MeanFreePath = path;//[m]
 	this->m_MeanFreeTime = path / 299792458. / this->m_OpticalDensity;
 }
 
-void ActiveMedium::M_SetNoEmissionsPerLength(float photonsFromSource) {
+void ActiveMedium::M_SetNoEmissionsPerLength() {
 	this->m_EmissionsPerTravel = this->m_Length / this->m_MeanFreePath;
+	//std::cout << this->m_EmissionsPerTravel << std::endl;
 }
 
 void ActiveMedium::M_SetNoEmissionsPerTime() {
-	this->m_EmissionsPerSecond = 1 / (this->m_MeanFreePath / 299792458. / this->m_OpticalDensity);
-	std::cout << this->m_EmissionsPerSecond << std::endl;
+	this->m_EmissionsPerSecond = 1 / this->m_MeanFreeTime;
+	//std::cout << this->m_EmissionsPerSecond << std::endl;
 }
 
 void ActiveMedium::M_SetLength(float l) {

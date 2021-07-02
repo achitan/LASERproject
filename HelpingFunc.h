@@ -61,7 +61,6 @@ float operator"" _Zr(unsigned long long z) {
 		size_t comma = line.find(",", line.find(*iterTypes)) != std::string::npos ? line.find(",", line.find(*iterTypes)) + 1 : std::string::npos;
 		if (comma != std::string::npos) {
 			radius = atof(line.substr(comma, line.find(",", comma) - comma).c_str());
-			std::cout << comma << " " << line.find(",", comma) << std::endl;
 			break;
 		}
 		iterTypes++;
