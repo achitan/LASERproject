@@ -94,14 +94,12 @@ void ActiveMedium::M_SetMeanFreePath(float density, float molecularDistance) {
 	this->m_MeanFreeTime = path / 299792458. / this->m_OpticalDensity;
 }
 
-void ActiveMedium::M_SetNoEmissionsPerLength() {
+void ActiveMedium::M_ComputeEmissionsPerLength() {
 	this->m_EmissionsPerTravel = this->m_Length / this->m_MeanFreePath;
-	//std::cout << this->m_EmissionsPerTravel << std::endl;
 }
 
-void ActiveMedium::M_SetNoEmissionsPerTime() {
+void ActiveMedium::M_ComputeEmissionsPerSec() {
 	this->m_EmissionsPerSecond = 1 / this->m_MeanFreeTime;
-	//std::cout << this->m_EmissionsPerSecond << std::endl;
 }
 
 void ActiveMedium::M_SetLength(float l) {

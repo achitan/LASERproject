@@ -17,8 +17,8 @@ int main() {
 	//am.M_IdentifyNearestEmission();
 	am.M_SetMeanFreePath(1,1000);
 	am.M_SetLength(1);
-	am.M_SetNoEmissionsPerLength();
-	am.M_SetNoEmissionsPerTime();
+	am.M_ComputeEmissionsPerLength();
+	am.M_ComputeEmissionsPerSec();
 	
 	//HELPING FUNCTIONS TEST
 	//std::cout << 70_Z << std::endl;
