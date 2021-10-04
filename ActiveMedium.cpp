@@ -100,8 +100,19 @@ void ActiveMedium::M_ComputeEmissionsPerLength() {
 
 void ActiveMedium::M_ComputeEmissionsPerSec() {
 	this->m_EmissionsPerSecond = 1 / this->m_MeanFreeTime;
+	this->m_OutputPhotonsPerSecond = this->m_EmissionsPerSecond * (1 - this->m_Reflection);
 }
 
 void ActiveMedium::M_SetLength(float l) {
 	this->m_Length = l;
+}
+
+void ActiveMedium::M_SetForm(std::string form) {
+	this->m_FormFactor = form;
+}
+
+void ActiveMedium::M_setVolume() {
+	if (this->m_FormFactor[0] == 'C' || this->m_FormFactor[0] == 'c') {
+		this->m_Volume = this->m_Length * 3.14159 * std::powf(this->m_Radius, 2);
+	}
 }

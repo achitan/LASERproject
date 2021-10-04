@@ -13,6 +13,8 @@ private:
 	unsigned int m_Ztransparence;
 	float m_Emission;
 	float m_Length;
+	float m_Radius;//or beam
+	std::string m_FormFactor;//to compute volume
 	float m_Reflection;//the semi-reflexive mirror (~99%)
 	float m_PrimaryPopInversionRadiation;
 	float m_MeanFreePath;
@@ -20,6 +22,11 @@ private:
 	float m_EmissionsPerTravel;
 	float m_EmissionsPerSecond;
 	float m_OpticalDensity;//refractive index
+	float m_OutputPhotonsPerSecond;//number of photons getting out of the AM to form the output laser
+	float m_NumberEmissionAtoms;//for flooding purposes
+	float m_Volume;
+
+	void M_setVolume();
 
 public:
 	ActiveMedium(unsigned int Z1, float n = 1, unsigned int Z2 = 0);//constructor for the AM, taking the emission atom Z1, the transparent atom Z2 and the optical density of the transparent medium
@@ -30,5 +37,6 @@ public:
 	void M_ComputeEmissionsPerLength();//considering MFP, this method computes the number of induced emissions for a single initial photon if it travels the entire length of the medium
 	void M_ComputeEmissionsPerSec();//considering MFT, this method computes the number of induced emissions per second for a single photon travelling through the medium
 	void M_SetLength(float l);//sets the length[m] of the AM in the dimension parallel to the preferred direction of travel
+	void M_SetForm(std::string form = "cylinder");
 };
 
