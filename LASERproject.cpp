@@ -12,7 +12,7 @@ int main() {
 	//source.M_SetPower(1000);
 	//source.M_RunFor(10);
 
-	ActiveMedium am(70, 33, 1.5);
+	ActiveMedium am(70, 1.5, 33);
 	am.M_SetIncomingRadiation(980);
 	//am.M_IdentifyNearestEmission();
 	am.M_SetMeanFreePath(1,1000);
